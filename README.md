@@ -7,3 +7,4 @@
 - Mongoose
 - Socket.io
 - EJS
+- Openstreetmap

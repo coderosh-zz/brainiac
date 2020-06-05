@@ -1,0 +1,29 @@
+<%- include('./includes/header.ejs') %>
+
+<div class="container">
+    <div class="ambulance-form">
+        <form method="POST">
+            <div class="form-control">
+                <label for="name">Name</label>
+                <input name="name" type="text" autocomplete="off" value="<%= oldInput.name %> ">
+                <%- errors['name'] && `<span class="form-error">${errors['name']}</span>` %>
+            </div>
+            <div class="form-control">
+                <label for="userId">User</label>
+                <select name="user" id="userId">
+                    <option value="">Select Email</option>
+                    <% allUsers.forEach(user => { %>
+                    <option value="<%= user.id %>"><%= user.email %></option>
+                    <% }) %>
+                </select>
+                <%- errors['user'] && `<span class="form-error">${errors['user']}</span>` %>
+            </div>
+            <button class="auth-submit" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<%- include('./includes/footer.ejs') %>

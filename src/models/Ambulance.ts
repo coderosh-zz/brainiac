@@ -3,7 +3,7 @@ import { Schema, Model, model, Document } from 'mongoose'
 interface IAmbulance extends Document {
 	name: string
 	user: any
-	available: boolean
+	available?: boolean
 }
 
 const ambulanceSchema = new Schema(

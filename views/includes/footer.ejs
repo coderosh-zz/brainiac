@@ -1,6 +1,55 @@
 <footer id="footer">
     <h5>Copyright &copy; Brainiac - Roshan Acharya</h5>
 </footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/push.js/1.0.12/push.js"></script>
+<script>
+    const socketIO = io('/')
+    Push.Permission.request(console.log, console.log)
+    socketIO.on('help', (payload) => {
+        console.log(payload)
+        if (payload.ambulance.user._id == "<%= user && user._id %>") {
+            Push.create("Brainiac!", {
+                body: `Emergency, Help asked by ${payload.user.name}`,
+                timeout: 7000,
+                onClick: function () {
+                    window.focus();
+                    this.close();
+                }
+            });
+        }
+
+    })
+</script>
+
+<% if(isAuthenticated){ %>
+
+<script>
+    const socket = io('/')
+    let prevLocation = localStorage.getItem('prevLocation')
+    if (!prevLocation) {
+        localStorage.setItem('prevLocation', JSON.stringify({ lat: 0, long: 0 }))
+        prevLocation = { lat: 0, long: 0 }
+    }
+    prevLocation = JSON.parse(prevLocation)
+    navigator.geolocation.watchPosition(pos => {
+
+        const l = {
+            lat: pos.coords.latitude,
+            long: pos.coords.longitude
+        }
+        socket.emit("locationUpdate", { userId: "<%= user._id %>", location: l })
+
+        if (Math.abs((prevLocation.lat - pos.coords.latitude)) > 0.0003 || Math.abs((prevLocation.long - pos.coords.longitude)) > 0.003) {
+            prevLocation = l
+            localStorage.setItem('prevLocation', JSON.stringify(l))
+            socket.emit('longLocationUpdate', { userId: "<%= user._id %>", location: l })
+        }
+    })
+
+</script>
+
+<% } %>
 </body>
 
 </html>

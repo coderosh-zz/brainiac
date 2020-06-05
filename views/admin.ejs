@@ -10,10 +10,19 @@
                 <th>Current Location</th>
                 <th>Available</th>
             </tr>
+            <% ambulances.forEach((ambulance, i) => { %>
+            <tr>
+                <td><%= i  + 1 %></td>
+                <td><%= ambulance.name %> </td>
+                <td><%= ambulance.user.location.coordinates[0] + ", " + ambulance.user.location.coordinates[1] %> </td>
+                <td><%= ambulance.available? "Yes" : "No" %></td>
+            </tr>
+            <% }) %>
         </table>
     </div>
 </div>
 
+<script src="/socket.io/socket.io.js"></script>
 
 
 <%- include('./includes/footer.ejs') %>
