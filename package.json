@@ -1,0 +1,8 @@
+{
+  "name": "braniac",
+  "version": "1.0.0",
+  "description": "Ambulance service application",
+  "main": "index.js",
+  "author": "Roshan Acharya",
+  "license": "MIT"
+}
