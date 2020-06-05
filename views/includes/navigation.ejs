@@ -1,0 +1,27 @@
+<nav id="navbar">
+    <div class="container">
+        <div class="nav-logo">
+            <a href="/">BRANIAC</a>
+        </div>
+        <ul id="nav-items">
+            <% if (isAuthenticated) { %>
+            <li class="nav-item">
+
+                <form method="POST" action="/auth/logout">
+                    <button type="submit">
+                        Logout
+                    </button>
+                </form>
+
+            </li>
+            <% }else { %>
+            <li class="nav-item">
+                <a class="<%= path === '/auth/login' && 'active' %>" href="/auth/login">Login</a>
+            </li>
+            <li class="nav-item">
+                <a class="<%= path === '/auth/signup' && 'active' %>" href="/auth/signup">Signup</a>
+            </li>
+            <% } %>
+        </ul>
+    </div>
+</nav>

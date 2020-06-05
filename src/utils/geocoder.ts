@@ -1,4 +1,4 @@
-import NodeGeocoder, { Options, Geocoder, Location } from 'node-geocoder'
+import NodeGeocoder, { Options, Geocoder } from 'node-geocoder'
 
 const options: Options = {
 	provider: 'mapquest',

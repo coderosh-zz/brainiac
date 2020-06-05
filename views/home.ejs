@@ -1,0 +1,27 @@
+<%- include('./includes/header.ejs') %>
+
+<div class="home_header">
+    <div class="container">
+        <div class="header_content">
+            <h1 class="title">BRAINIAC</h1>
+
+            <div class="call_to_actions">
+                <% if (!isAuthenticated) { %>
+                <a href="/auth/login">Login</a>
+                <a href="/auth/signup">Signup</a>
+                <% }else if(isAuthenticated && user.role === "admin"){ %>
+                <a href="/admin">Admin Panel</a>
+                <% }else if(isAuthenticated && user.role === "service"){ %>
+                <a href="/service">Service</a>
+                <% }else if(isAuthenticated && user.role === "user"){ %>
+                <a href="/help">HELP!!</a>
+                <% } %>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<%- include('./includes/footer.ejs') %>

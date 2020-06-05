@@ -1,0 +1,41 @@
+<%- include('../includes/header.ejs') %>
+<div class="container">
+    <div class="auth-form">
+        <h3 class="auth-form-title">LOGIN</h3>
+        <form action="/auth/login" method="POST">
+            <div class="form-control">
+                <label for="email">Email</label>
+                <input type="email" name="email" id="email" autocomplete="off" value="<%= oldInput.email %> " />
+                <%- errors['email'] && `<span class="form-error">${errors['email']}</span>` %>
+            </div>
+            <div class="form-control">
+                <label for="password">Password</label>
+                <input type="password" name="password" id="password" autocomplete="off"
+                    value="<%= oldInput.password %>" />
+                <%- errors['password'] && `<span class="form-error">${errors['password']}</span>` %>
+            </div>
+            <input type="hidden" id="location" name="location">
+            <button class="auth-submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script>
+
+    const el = document.querySelector('#location')
+    navigator.permissions.query({ name: 'geolocation' }).then(s => {
+        navigator.geolocation.getCurrentPosition(e => {
+            const el = document.querySelector('#location')
+            el.value = JSON.stringify({ longitude: e.coords.longitude, latitude: e.coords.latitude })
+        }, null, { enableHighAccuracy: true, })
+
+        if (s.state === "denied") {
+            alert("Location permission is denied. Please click the 🛈 icon on left of address bar and change location permission to 'allow'")
+        }
+    })
+</script>
+
+<%- include('../includes/footer.ejs') %>

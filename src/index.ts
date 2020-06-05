@@ -5,6 +5,9 @@ import session from 'express-session'
 import connectToDatabase from './config/db'
 import socketio from './socket'
 
+import appRouter from './routes/app'
+import authRouter from './routes/auth'
+
 const app = express()
 
 app.set('view engine', 'ejs')
@@ -27,6 +30,9 @@ app.use((req, res, next) => {
 	res.locals.user = req.session!.user
 	next()
 })
+
+app.use('/auth', authRouter)
+app.use(appRouter)
 
 const PORT = process.env.PORT || 8080
 
