@@ -1,0 +1,99 @@
+<%- include('./includes/header.ejs') %>
+
+<div class="container">
+    <div class="service-page">
+        <div class="service-help">
+            <h2>HELP</h2>
+            <% if (typeof help !== "undefined") { %>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <td><%= help.user.name  %> </td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td><%= help.user.email %></td>
+                </tr>
+                <tr>
+                    <th>Location</th>
+                    <td><%= formatted.streetName + ', ' + formatted.city %></td>
+                </tr>
+                <tr>
+                    <th>Coordinates</th>
+                    <td><%= help.user.location.coordinates[0].toFixed(8) + ", " + help.user.location.coordinates[1].toFixed(8) %>
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <a href="/patient/<%= help.user._id %>"
+                            style="color: crimson;text-decoration: underline;font-weight: 600;">Open</a>
+                    </td>
+                </tr>
+            </table>
+            <% } %>
+        </div>
+        <div class="service_info">
+            <form method="post" class="edit_ambulance">
+                <div class="form-checkbox">
+                    <input type="checkbox" name="available" id="available" <%= ambulance.available ? "checked": "" %>>
+                    <label for="available">Available</label>
+                </div>
+                <div class="form-control">
+                    <label for="name">Name</label>
+                    <input type="name" id="name" name="name" value="<%= ambulance.name %>">
+                </div>
+                <button type="submit" class="auth-submit">Submit</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+
+<script src="/socket.io/socket.io.js"></script>
+
+
+<script>
+    const socketio = io('/')
+    socketio.on('help', (payload) => {
+
+        document.querySelector('#available').checked = payload.ambulance.available
+        document.querySelector('#name').value = payload.ambulance.name
+
+        if (payload.ambulance._id == "<%= ambulance._id %>") {
+            const serviceHelp = document.querySelector('.service-help')
+
+            serviceHelp.innerHTML = `
+            <h2>HELP</h2>
+            <table>
+                <tr>
+                    <th>Name</th>
+                    <td>${payload.user.name}</td>
+                </tr>
+                <tr>
+                    <th>Email</th>
+                    <td>${payload.user.email}</td>
+                </tr>
+                <tr>
+                    <th>Location</th>
+                    <td>${payload.formatted.streetName}, ${payload.formatted.city}</td>
+                </tr>
+                <tr>
+                    <th>Coordinates</th>
+                    <td>${payload.user.location.coordinates[0].toFixed(8) + ", " + payload.user.location.coordinates[1].toFixed(8)}
+                    </td>
+                </tr>
+                <tr>
+                    <th></th>
+                    <td>
+                        <a href="/patient/${payload.user._id}"
+                            style="color: crimson;text-decoration: underline;font-weight: 600;">Open</a>
+                    </td>
+                </tr>
+            </table>
+            `
+        }
+    })
+</script>
+
+<%- include('./includes/footer.ejs') %>

@@ -1,16 +1,16 @@
 import express from 'express'
 import path from 'path'
 import session from 'express-session'
-
-import connectToDatabase from './config/db'
-import User from './models/User'
 import socketio from './socket'
-import isAuth from './middlewares/auth'
-import isAdmin from './middlewares/isAdmin'
 
-import appRouter from './routes/app'
 import authRouter from './routes/auth'
+import appRouter from './routes/app'
 import adminRouter from './routes/admin'
+import connectToDatabase from './config/db'
+
+import isAdmin from './middlewares/isAdmin'
+import isAuth from './middlewares/auth'
+import User from './models/User'
 
 const app = express()
 

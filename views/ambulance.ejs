@@ -1,0 +1,67 @@
+<%- include('./includes/header.ejs') %>
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/css/ol.css"
+    type="text/css">
+<style>
+    .map {
+        height: 400px;
+        width: 100%;
+        height: calc(100vh - 60px);
+    }
+</style>
+<script src="https://cdn.jsdelivr.net/gh/openlayers/openlayers.github.io@master/en/v6.3.1/build/ol.js"></script>
+
+<div id="map" class="map"></div>
+
+<div class="map-info" style="display: none;">
+    <div class="item-info title">Ambulance Service - Brainiac</div>
+    <div class="item-info">
+        <table>
+            <tr>
+                <th>Ambulance</th>
+                <td>Ramu Sewa</td>
+            </tr>
+            <tr>
+                <th>Driver</th>
+                <td>Ram Bahadur</td>
+            </tr>
+            <tr>
+                <th>Location</th>
+                <td>85.34, 234.23</td>
+            </tr>
+        </table>
+    </div>
+    <div class="item-info">
+        <button class="auth-submit">Help</button>
+    </div>
+</div>
+
+<script src="/js/map.js"></script>
+
+<script>
+    const myLoc = [parseFloat("<%= user.location.coordinates[0] %>"), parseFloat("<%= user.location.coordinates[1] %>")]
+    const me = setMarker(myLoc, dotStyle, "ME")
+
+    const ambLoc = [parseFloat("<%= ambulance.user.location.coordinates[0] %>"), parseFloat("<%= ambulance.user.location.coordinates[1] %>")]
+    const amb = setMarker(ambLoc, iconStyle, "ME")
+
+</script>
+
+<script src="/socket.io/socket.io.js"></script>
+
+<script>
+    const socketio = io('/')
+    socketio.on('updateLocation', payload => {
+        if (payload.userId == "<%= ambulance.user._id %>") {
+            amb.getGeometry().setCoordinates(ol.proj.fromLonLat([payload.location.long, payload.location.lat]))
+        }
+
+        if (payload.userId == "<%= user._id %>") {
+            me.getGeometry().setCoordinates(ol.proj.fromLonLat([payload.location.long, payload.location.lat]))
+        }
+    })
+
+</script>
+
+
+<%- include('./includes/footer.ejs') %>
